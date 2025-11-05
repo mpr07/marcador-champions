@@ -113,16 +113,30 @@ function aplicarColors(banda) {
 
   const colors = colorB ? [colorA, colorB] : [colorA];
   db.ref(`marcador/colors/${banda}`).set(colors);
-
-  function ajustarSegons(delta) {
-  // Calcula el nou temps a partir de les variables locals
-  let total = minuts * 60 + segons + delta;
-  if (total < 0) total = 0;
-
-  minuts = Math.floor(total / 60);
-  segons = total % 60;
-
-  const format = `${minuts.toString().padStart(2, '0')}:${segons.toString().padStart(2, '0')}`;
-  db.ref('marcador').update({ temps: format });
 }
+
+function ajustarSegons(delta) {
+  db.ref('marcador/temps').once('value').then(snapshot => {
+    const valor = snapshot.val();
+    const regex = /^(\d{1,2}):(\d{2})$/;
+
+    if (regex.test(valor)) {
+      let [_, min, seg] = valor.match(regex);
+      let total = parseInt(min) * 60 + parseInt(seg) + delta;
+
+      if (total < 0) total = 0;
+
+      const minutsNou = Math.floor(total / 60);
+      const segonsNou = total % 60;
+
+      // Actualitza variables locals perquè el cronòmetre segueixi correctament
+      minuts = minutsNou;
+      segons = segonsNou;
+
+      const format = `${minutsNou.toString().padStart(2, '0')}:${segonsNou.toString().padStart(2, '0')}`;
+      db.ref('marcador').update({ temps: format });
+    } else {
+      alert("El format del temps no és vàlid.");
+    }
+  });
 }
