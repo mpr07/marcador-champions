@@ -44,4 +44,22 @@ db.ref('marcador').on('value', snapshot => {
   document.getElementById('gols2').textContent = data.gols2;
   document.getElementById('equip1').textContent = data.equip1;
   document.getElementById('equip2').textContent = data.equip2;
+  const colors = data.colors || {};
+
+['esquerra', 'dreta'].forEach(banda => {
+  const franja = document.getElementById(`franja-${banda}`);
+  const quadre = document.getElementById(`color-box-${banda}`);
+  const valors = colors[banda];
+
+  if (valors && valors.length === 1) {
+    franja.style.background = valors[0];
+    quadre.style.background = valors[0];
+  } else if (valors && valors.length === 2) {
+    franja.style.background = `linear-gradient(${valors[0]} 50%, ${valors[1]} 50%)`;
+    quadre.style.background = `linear-gradient(to bottom, ${valors[0]} 50%, ${valors[1]} 50%)`;
+  } else {
+    franja.style.background = 'transparent';
+    quadre.style.background = 'transparent';
+  }
+});
 });

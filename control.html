@@ -15,6 +15,16 @@
     <button onclick="sumarGol('gols2')">+ Gol BAR</button>
     <button onclick="restarGol('gols2')">- Gol BAR</button><br><br>
     <br><br>
+<label>Colors BRU:</label>
+<input type="text" id="color1a" placeholder="#0000FF">
+<input type="text" id="color1b" placeholder="(opcional)">
+<button onclick="aplicarColors('esquerra')">🎨 Aplica BRU</button>
+<br>
+<label>Colors BAR:</label>
+<input type="text" id="color2a" placeholder="#FF0000">
+<input type="text" id="color2b" placeholder="(opcional)">
+<button onclick="aplicarColors('dreta')">🎨 Aplica BAR</button>
+    <br><br>
 <input type="text" id="tempsManual" placeholder="Ex: 45:00">
 <button onclick="aplicarTempsManual()">🕒 Aplicar temps</button>
 <br><br>
@@ -23,6 +33,11 @@
 <input type="text" id="nomEquip2" placeholder="Nom BAR">
 <button onclick="canviarNom('equip2')">✏️ Canviar BAR</button>
     <button onclick="reiniciarMarcador()">🔄 Reiniciar marcador</button>
+    <br><br>
+<button onclick="ajustarSegons(10)">➕ 10s</button>
+<button onclick="ajustarSegons(30)">➕ 30s</button>
+<button onclick="ajustarSegons(60)">➕ 1min</button>
+<button onclick="ajustarSegons(300)">➕ 5min</button>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

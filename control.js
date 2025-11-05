@@ -15,7 +15,6 @@ function actualitzarTemps() {
 function iniciarTemps() {
   if (intervalId) return; // Ja està en marxa
 
-  // Obtenim el temps actual del marcador
   db.ref('marcador/temps').once('value').then(snapshot => {
     const valor = snapshot.val();
     const regex = /^(\d{1,2}):(\d{2})$/;
@@ -31,6 +30,7 @@ function iniciarTemps() {
           segons = 0;
           minuts++;
         }
+
         const format = `${minuts.toString().padStart(2, '0')}:${segons.toString().padStart(2, '0')}`;
         db.ref('marcador').update({ temps: format });
       }, 1000);
@@ -76,10 +76,15 @@ function reiniciarMarcador() {
 
 function aplicarTempsManual() {
   const valor = document.getElementById('tempsManual').value;
-  const regex = /^\d{1,2}:\d{2}$/;
+  const regex = /^(\d{1,2}):(\d{2})$/;
 
   if (regex.test(valor)) {
-    db.ref('marcador').update({ temps: valor });
+    const [_, min, seg] = valor.match(regex);
+    minuts = parseInt(min);
+    segons = parseInt(seg);
+
+    const format = `${minuts.toString().padStart(2, '0')}:${segons.toString().padStart(2, '0')}`;
+    db.ref('marcador').update({ temps: format });
   } else {
     alert("Format incorrecte. Usa HH:MM (ex: 45:00)");
   }
@@ -94,4 +99,30 @@ function canviarNom(equip) {
   } else {
     alert("Introdueix un nom vàlid.");
   }
+}
+
+function aplicarColors(banda) {
+  const prefix = banda === 'esquerra' ? 'color1' : 'color2';
+  const colorA = document.getElementById(`${prefix}a`).value.trim();
+  const colorB = document.getElementById(`${prefix}b`).value.trim();
+
+  if (!colorA) {
+    alert("Introdueix com a mínim un color en format hexadecimal.");
+    return;
+  }
+
+  const colors = colorB ? [colorA, colorB] : [colorA];
+  db.ref(`marcador/colors/${banda}`).set(colors);
+
+  function ajustarSegons(delta) {
+  // Calcula el nou temps a partir de les variables locals
+  let total = minuts * 60 + segons + delta;
+  if (total < 0) total = 0;
+
+  minuts = Math.floor(total / 60);
+  segons = total % 60;
+
+  const format = `${minuts.toString().padStart(2, '0')}:${segons.toString().padStart(2, '0')}`;
+  db.ref('marcador').update({ temps: format });
+}
 }

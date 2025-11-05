@@ -124,3 +124,33 @@ body {
   width: 100px;
   text-align: center;
   margin: 5px;}
+
+  #franja-esquerra, #franja-dreta {
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  z-index: 1;
+}
+
+#franja-esquerra {
+  left: 0;
+  top: 0;
+}
+
+#franja-dreta {
+  right: 0;
+  top: 0;
+}
+
+.equip-bloc {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: transparent;
+}
