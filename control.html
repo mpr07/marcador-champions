@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Control Marcador</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Control del marcador</h2>
+  <div id="controls">
+    <button onclick="iniciarTemps()">▶️ Iniciar</button>
+    <button onclick="pausarTemps()">⏸️ Pausar</button><br><br>
+    <button onclick="sumarGol('gols1')">+ Gol BRU</button>
+    <button onclick="restarGol('gols1')">- Gol BRU</button>
+    <button onclick="sumarGol('gols2')">+ Gol BAR</button>
+    <button onclick="restarGol('gols2')">- Gol BAR</button><br><br>
+    <br><br>
+<input type="text" id="tempsManual" placeholder="Ex: 45:00">
+<button onclick="aplicarTempsManual()">🕒 Aplicar temps</button>
+<br><br>
+<input type="text" id="nomEquip1" placeholder="Nom BRU">
+<button onclick="canviarNom('equip1')">✏️ Canviar BRU</button>
+<input type="text" id="nomEquip2" placeholder="Nom BAR">
+<button onclick="canviarNom('equip2')">✏️ Canviar BAR</button>
+    <button onclick="reiniciarMarcador()">🔄 Reiniciar marcador</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="control.js"></script>
+</body>
+</html>

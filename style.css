@@ -1,0 +1,127 @@
+/* Font personalitzada */
+@font-face {
+  font-family: 'ChampionsFont';
+  src: url('fonts/ITC-Novarese-Bold.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  font-family: 'ChampionsFont', serif;
+}
+
+
+#marcador {
+  position: relative;
+  width: 545px;
+  height: 40px;
+  overflow: hidden;
+}
+
+#fons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+}
+
+
+/* Temps en negre */
+#temps {
+  position: absolute;
+  margin-left: 22px;
+  top: 50%;
+  left: 40px;
+  transform: translateY(-50%);
+  font-size: 32px;
+  color: black; /* Canviat a negre */
+  font-weight: bold;
+  z-index: 1;
+}
+
+/* Text del marcador en blanc */
+.nom, .gols, .separador, .barra {
+  font-size: 28px;
+  margin-left: 10px;
+  margin-right: 30px;
+  color: white;
+  font-weight: bold;
+  font-family: 'ChampionsFont', serif;
+}
+
+
+
+/* Bloc central del marcador */
+#bloc-marcador {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left:96px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nom {
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+}
+
+.gols {
+  font-size: 28px;
+  color: white;
+  font-weight: bold;
+}
+
+.separador, .barra {
+  font-size: 28px;
+  color: white;
+  font-weight: bold;
+}
+
+#controls {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#controls button {
+  font-family: 'ChampionsFont', serif;
+  font-size: 16px;
+  margin: 5px;
+  padding: 6px 12px;
+  background-color: #222;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#controls button:hover {
+  background-color: #444;
+}
+
+#tempsManual {
+  font-family: 'ChampionsFont', serif;
+  font-size: 16px;
+  padding: 6px;
+  width: 100px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+#nomEquip1, #nomEquip2 {
+  font-family: 'ChampionsFont', serif;
+  font-size: 16px;
+  padding: 6px;
+  width: 100px;
+  text-align: center;
+  margin: 5px;
+}
