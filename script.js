@@ -15,11 +15,11 @@ db.ref('marcador').on('value', snapshot => {
   const data = snapshot.val();
   if (!data) return;
 
-  // 1. TEMPS
+  // 1. ACTUALITZAR TEMPS
   const elTemps = obtenirElementTemps();
   if (elTemps) elTemps.textContent = data.temps;
 
-  // 2. GOLS I NOMS / ESCUTS
+  // 2. ACTUALITZAR GOLS I NOMS / ESCUTS
   const g1 = document.getElementById('gols1'), g2 = document.getElementById('gols2');
   const e1 = document.getElementById('equip1'), e2 = document.getElementById('equip2');
 
@@ -28,7 +28,6 @@ db.ref('marcador').on('value', snapshot => {
 
   if (e1 && e2) {
     if (data.mode === 'escut') {
-      // Definim la ruta base sense extensió
       const logo1 = `assets/${data.equip1}`;
       const logo2 = `assets/${data.equip2}`;
 
@@ -42,21 +41,31 @@ db.ref('marcador').on('value', snapshot => {
     }
   }
 
-  // 3. COLORS (Amb filtre segons el tipus de marcador)
+  // 3. ACTUALITZACIÓ DE COLORS (Amb filtratge per banda i tipus de marcador)
   const colors = data.colors || {};
   const esLliga = esMarcadorLliga();
 
-  ['esquerra', 'dreta'].forEach(banda => {
-    const valors = colors[banda];
-    
-    const idsCandidats = ['color-box-esquerra', 'color-box-dreta', 'color-box-lliga-esquerra', 'color-box-lliga-dreta', 'franja-esquerra', 'franja-dreta'];
+  // Definim quins IDs pertanyen a cada banda per evitar conflictes
+  const configuracioBandes = [
+    {
+      banda: 'esquerra', // Dades de l'Equip 1
+      ids: ['color-box-esquerra', 'color-box-lliga-esquerra', 'franja-esquerra']
+    },
+    {
+      banda: 'dreta', // Dades de l'Equip 2
+      ids: ['color-box-dreta', 'color-box-lliga-dreta', 'franja-dreta']
+    }
+  ];
 
-    idsCandidats.forEach(id => {
+  configuracioBandes.forEach(config => {
+    const valors = colors[config.banda];
+    
+    config.ids.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
 
+      // FILTRE: Només mostrem l'element si correspon al marcador actual
       let hauriaDeSerVisible = false;
-
       if (esLliga) {
         if (id.includes('lliga')) hauriaDeSerVisible = true;
       } else {
@@ -64,17 +73,20 @@ db.ref('marcador').on('value', snapshot => {
       }
 
       if (hauriaDeSerVisible) {
-        // Fem que torni a ser visible segons el tipus d'element
-        el.style.display = id.includes('color-box') ? "inline-block" : "block"; 
+        // Mostrem l'element (inline-block per a quadrats, block per a franges)
+        el.style.display = id.includes('color-box') ? "inline-block" : "block";
         
         if (valors && valors.length === 1) {
+          // Color sòlid
           el.style.background = valors[0];
         } else if (valors && valors.length === 2) {
+          // Gradient vertical (50/50)
           el.style.background = `linear-gradient(to bottom, ${valors[0]} 50%, ${valors[1]} 50%)`;
         } else {
           el.style.background = 'transparent';
         }
       } else {
+        // Amaguem els elements que no pertanyen a aquest disseny
         el.style.display = "none";
       }
     });
