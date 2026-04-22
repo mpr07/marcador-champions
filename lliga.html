@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Marcador Lliga</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="marcadorLliga">
+    <img src="assets/fonsLliga.png" id="fonsLliga" alt="Fons marcador">
+
+    <div id="tempsLliga">90:00</div>
+
+    <div id="franja-esquerra"></div>
+<div id="franja-dreta"></div>
+
+<div id="bloc-marcador-lliga">
+  <div class="equip-bloc-lliga">
+    <span class="nomLliga" id="equip1">BRU</span>
+    <div class="color-box-lliga" id="color-box-lliga-esquerra"></div> <span class="golsLliga" id="gols1">0</span>
+  </div>
+
+  <div class="equip-bloc-lliga">
+    <span class="nomLliga" id="equip2">BAR</span>
+    <div class="color-box-lliga" id="color-box-lliga-dreta"></div> <span class="golsLliga" id="gols2">0</span>
+  </div>
+</div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

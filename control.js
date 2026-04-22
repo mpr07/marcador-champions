@@ -140,3 +140,13 @@ function ajustarSegons(delta) {
     }
   });
 }
+
+function activarEscuts() {
+  // Suposem que les imatges es diuen exactament com els noms (Ex: BRU.png, BAR.png)
+  // O pots definir rutes fixes. Aquí enviem el senyal de mode "escut"
+  db.ref('marcador/mode').set('escut');
+}
+
+function activarNoms() {
+  db.ref('marcador/mode').set('text');
+}

@@ -10,34 +10,37 @@
   <div id="controls">
     <button onclick="iniciarTemps()">▶️ Iniciar</button>
     <button onclick="pausarTemps()">⏸️ Pausar</button><br><br>
-    <button onclick="sumarGol('gols1')">+ Gol BRU</button>
-    <button onclick="restarGol('gols1')">- Gol BRU</button>
-    <button onclick="sumarGol('gols2')">+ Gol BAR</button>
-    <button onclick="restarGol('gols2')">- Gol BAR</button><br><br>
+    <button onclick="sumarGol('gols1')">+ Gol EQ1</button>
+    <button onclick="restarGol('gols1')">- Gol EQ1</button>
+    <button onclick="sumarGol('gols2')">+ Gol EQ2</button>
+    <button onclick="restarGol('gols2')">- Gol EQ2</button><br><br>
     <br><br>
-<label>Colors BRU:</label>
+<label>Colors EQ1:</label>
 <input type="text" id="color1a" placeholder="#0000FF">
 <input type="text" id="color1b" placeholder="(opcional)">
-<button onclick="aplicarColors('esquerra')">🎨 Aplica BRU</button>
+<button onclick="aplicarColors('esquerra')">🎨 Aplica EQ1</button>
 <br>
 <label>Colors BAR:</label>
 <input type="text" id="color2a" placeholder="#FF0000">
 <input type="text" id="color2b" placeholder="(opcional)">
-<button onclick="aplicarColors('dreta')">🎨 Aplica BAR</button>
+<button onclick="aplicarColors('dreta')">🎨 Aplica EQ2</button>
     <br><br>
 <input type="text" id="tempsManual" placeholder="Ex: 45:00">
 <button onclick="aplicarTempsManual()">🕒 Aplicar temps</button>
 <br><br>
 <input type="text" id="nomEquip1" placeholder="Nom BRU">
-<button onclick="canviarNom('equip1')">✏️ Canviar BRU</button>
+<button onclick="canviarNom('equip1')">✏️ Canviar EQ1</button>
 <input type="text" id="nomEquip2" placeholder="Nom BAR">
-<button onclick="canviarNom('equip2')">✏️ Canviar BAR</button>
+<button onclick="canviarNom('equip2')">✏️ Canviar EQ2</button>
     <button onclick="reiniciarMarcador()">🔄 Reiniciar marcador</button>
     <br><br>
 <button onclick="ajustarSegons(10)">➕ 10s</button>
 <button onclick="ajustarSegons(30)">➕ 30s</button>
 <button onclick="ajustarSegons(60)">➕ 1min</button>
 <button onclick="ajustarSegons(300)">➕ 5min</button>
+<br>
+<button onclick="activarEscuts()">🛡️ Mostrar Escuts</button>
+<button onclick="activarNoms()">✏️ Mostrar Noms</button>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

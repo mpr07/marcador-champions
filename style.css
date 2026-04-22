@@ -4,6 +4,16 @@
   src: url('fonts/ITC-Novarese-Bold.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'LligaFont';
+  src: url('fonts/laliga.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'LletresLliga';
+  src: url('fonts/SKMerih-Light.ttf') format('truetype');
+}
+
 body {
   margin: 0;
   background: transparent;
@@ -18,6 +28,14 @@ body {
   overflow: hidden;
 }
 
+#marcadorLliga {
+  position: relative;
+  width: 349px;  /* Mida exacta de la teva imatge */
+  height: 187px; /* Mida exacta de la teva imatge */
+  overflow: hidden;
+  font-family: sans-serif; /* La Lliga sol usar fonts sense serifa */
+}
+
 #fons {
   position: absolute;
   top: 50%;
@@ -28,6 +46,16 @@ body {
   height: auto;
   max-width: none;
   max-height: none;
+}
+
+#fonsLliga {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  object-fit: contain; /* Això assegura que la imatge s'ajusti bé */
 }
 
 
@@ -44,14 +72,37 @@ body {
   z-index: 1;
 }
 
+#tempsLliga {
+  position: absolute;
+  margin-left: -10px;
+  margin-top: 55px;
+  top: 50%;
+  left: 40px;
+  transform: translateY(-50%);
+  font-size: 42px;
+  color: black; /* Canviat a negre */
+  font-weight: bold;
+  z-index: 1;
+  font-family: 'LletresLliga';
+}
+
 /* Text del marcador en blanc */
 .nom, .gols, .separador, .barra {
+  font-size: 28px;
+  margin-left: 0px;
+  margin-right: 50px;
+  color: white;
+  font-weight: bold;
+  font-family: 'ChampionsFont', serif;
+}
+
+.nomLliga, .golsLliga, .separadorLliga, .barraLliga {
   font-size: 28px;
   margin-left: 10px;
   margin-right: 30px;
   color: white;
   font-weight: bold;
-  font-family: 'ChampionsFont', serif;
+  font-family: 'LligaFont', serif;
 }
 
 
@@ -69,16 +120,49 @@ body {
   gap: 10px;
 }
 
+#bloc-marcador-lliga {
+  position: absolute;
+  top: 50%;
+  left: 58%; /* Una mica més a la dreta per deixar lloc al temps */
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column; 
+  gap: 0px; /* Espai entre files */
+}
+
 .nom {
   font-size: 24px;
   color: white;
   font-weight: bold;
 }
 
+.nomLliga {
+  font-family: 'LligaFont', sans-serif;
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+  text-align: right;
+  width: 80px; /* Amplada fixa per alinear el següent element */
+  margin: 0;
+  margin-left: -10px;
+  margin-right: 15px;
+}
+
 .gols {
   font-size: 28px;
   color: white;
   font-weight: bold;
+}
+
+.golsLliga {
+  font-family: 'LligaFont', sans-serif;
+  font-size: 60px;
+  color: black;
+  font-weight: bold;
+  min-width: 50px;
+  text-align: center;
+  margin-left:15px;
 }
 
 .separador, .barra {
@@ -148,9 +232,47 @@ body {
   gap: 6px;
 }
 
+.equip-bloc-lliga {
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: flex-start; /* Alinea cap a l'esquerra del bloc */
+  gap: 5px;
+  margin-left: 80px;
+}
+
 .color-box {
   width: 20px;
   height: 20px;
   border-radius: 3px;
   background: transparent;
+}
+
+.color-box-lliga {
+  width: 10px;        /* Més estret */
+  height: 95px;       /* Més alt, per semblar una barra */
+  flex-shrink: 0;
+  margin: 0 5px;      /* Espaiat lateral */
+}
+
+/* Aplica això per centrar-los i moure'ls on vulguis */
+.escut-img {
+  height: 55px; 
+  width: auto;
+  position: relative;
+}
+
+/* Equip de dalt */
+#equip1 .escut-img {
+  transform: translate(3px, 2px); /* (X, Y) -> -10px esquerra, 2px avall */
+}
+
+/* Equip de baix */
+#equip2 .escut-img {
+  transform: translate(1px, 2px); /* Posa els mateixos valors per alinear-los */
+}
+
+/* Si vols que l'escut sigui una mica més gran a la Lliga (que és més alta) */
+.nomLliga img {
+  height: 80px; /* Ajusta segons l'alçada del teu marcador de la lliga */
 }
