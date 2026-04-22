@@ -2,47 +2,82 @@ let minuts = 0;
 let segons = 0;
 let intervalId = null;
 
-function actualitzarTemps() {
-  segons++;
-  if (segons >= 60) {
-    segons = 0;
-    minuts++;
-  }
-  const format = `${minuts.toString().padStart(2, '0')}:${segons.toString().padStart(2, '0')}`;
-  db.ref('marcador').update({ temps: format });
+// Funció interna per formatar el temps a "MM:SS"
+function formatarTemps(m, s) {
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
 function iniciarTemps() {
-  if (intervalId) return; // Ja està en marxa
+  if (intervalId) {
+    console.log("El rellotge ja estava en marxa.");
+    return; 
+  }
+
+  console.log("Iniciant cronòmetre...");
 
   db.ref('marcador/temps').once('value').then(snapshot => {
-    const valor = snapshot.val();
-    const regex = /^(\d{1,2}):(\d{2})$/;
+    const valor = snapshot.val() || "00:00";
+    const parts = valor.split(':');
+    
+    if (parts.length === 2) {
+      minuts = parseInt(parts[0]);
+      segons = parseInt(parts[1]);
+      
+      console.log(`Temps sincronitzat: ${minuts}:${segons}`);
 
-    if (regex.test(valor)) {
-      const [_, min, seg] = valor.match(regex);
-      minuts = parseInt(min);
-      segons = parseInt(seg);
-
+      // Usem setInterval i ens assegurem que la variable intervalId es guardi bé
       intervalId = setInterval(() => {
         segons++;
         if (segons >= 60) {
           segons = 0;
           minuts++;
+          console.log("Canvi de minut detectat...");
         }
 
-        const format = `${minuts.toString().padStart(2, '0')}:${segons.toString().padStart(2, '0')}`;
-        db.ref('marcador').update({ temps: format });
+        const format = formatarTemps(minuts, segons);
+        
+        // Enviem a Firebase i capturem si hi ha errors
+        db.ref('marcador').update({ temps: format })
+          .catch(err => console.error("Error actualitzant Firebase:", err));
+
       }, 1000);
-    } else {
-      alert("El format del temps no és vàlid.");
     }
-  });
+  }).catch(err => console.error("Error llegint de Firebase:", err));
 }
 
 function pausarTemps() {
-  clearInterval(intervalId);
-  intervalId = null;
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+}
+
+function aplicarTempsManual() {
+  const valor = document.getElementById('tempsManual').value;
+  const regex = /^(\d{1,2}):(\d{2})$/;
+
+  if (regex.test(valor)) {
+    const [_, min, seg] = valor.match(regex);
+    minuts = parseInt(min);
+    segons = parseInt(seg);
+
+    const format = formatarTemps(minuts, segons);
+    db.ref('marcador').update({ temps: format });
+  } else {
+    alert("Format incorrecte. Usa HH:MM (ex: 45:00)");
+  }
+}
+
+function ajustarSegons(delta) {
+  // Calculem el total actual en segons
+  let total = (minuts * 60) + segons + delta;
+  if (total < 0) total = 0;
+
+  minuts = Math.floor(total / 60);
+  segons = total % 60;
+
+  const format = formatarTemps(minuts, segons);
+  db.ref('marcador').update({ temps: format });
 }
 
 function sumarGol(equip) {
@@ -60,34 +95,16 @@ function restarGol(equip) {
 }
 
 function reiniciarMarcador() {
+  pausarTemps();
   minuts = 0;
   segons = 0;
-  clearInterval(intervalId);
-  intervalId = null;
 
-  db.ref('marcador').set({
+  db.ref('marcador').update({
     temps: "00:00",
-    equip1: "BRU",
-    equip2: "BAR",
     gols1: 0,
-    gols2: 0
+    gols2: 0,
+    mode: 'text' // Tornem a mode text per defecte
   });
-}
-
-function aplicarTempsManual() {
-  const valor = document.getElementById('tempsManual').value;
-  const regex = /^(\d{1,2}):(\d{2})$/;
-
-  if (regex.test(valor)) {
-    const [_, min, seg] = valor.match(regex);
-    minuts = parseInt(min);
-    segons = parseInt(seg);
-
-    const format = `${minuts.toString().padStart(2, '0')}:${segons.toString().padStart(2, '0')}`;
-    db.ref('marcador').update({ temps: format });
-  } else {
-    alert("Format incorrecte. Usa HH:MM (ex: 45:00)");
-  }
 }
 
 function canviarNom(equip) {
@@ -107,7 +124,7 @@ function aplicarColors(banda) {
   const colorB = document.getElementById(`${prefix}b`).value.trim();
 
   if (!colorA) {
-    alert("Introdueix com a mínim un color en format hexadecimal.");
+    alert("Introdueix com a mínim un color.");
     return;
   }
 
@@ -115,38 +132,10 @@ function aplicarColors(banda) {
   db.ref(`marcador/colors/${banda}`).set(colors);
 }
 
-function ajustarSegons(delta) {
-  db.ref('marcador/temps').once('value').then(snapshot => {
-    const valor = snapshot.val();
-    const regex = /^(\d{1,2}):(\d{2})$/;
-
-    if (regex.test(valor)) {
-      let [_, min, seg] = valor.match(regex);
-      let total = parseInt(min) * 60 + parseInt(seg) + delta;
-
-      if (total < 0) total = 0;
-
-      const minutsNou = Math.floor(total / 60);
-      const segonsNou = total % 60;
-
-      // Actualitza variables locals perquè el cronòmetre segueixi correctament
-      minuts = minutsNou;
-      segons = segonsNou;
-
-      const format = `${minutsNou.toString().padStart(2, '0')}:${segonsNou.toString().padStart(2, '0')}`;
-      db.ref('marcador').update({ temps: format });
-    } else {
-      alert("El format del temps no és vàlid.");
-    }
-  });
-}
-
 function activarEscuts() {
-  // Suposem que les imatges es diuen exactament com els noms (Ex: BRU.png, BAR.png)
-  // O pots definir rutes fixes. Aquí enviem el senyal de mode "escut"
-  db.ref('marcador/mode').set('escut');
+  db.ref('marcador').update({ mode: 'escut' });
 }
 
 function activarNoms() {
-  db.ref('marcador/mode').set('text');
+  db.ref('marcador').update({ mode: 'text' });
 }
